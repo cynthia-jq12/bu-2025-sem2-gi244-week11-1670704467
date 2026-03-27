@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
-    public float forcaloint;
+    public Transform focalPoint;
 
     private Rigidbody rb;
 
