@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
             {
                 var rb = collision.gameObject.GetComponent<Rigidbody>();
                 var direction = collision.transform.position - transform.position;
-                rb.AddForce(100 * direction.normalized , ForceMode.Impulse);
+                rb.AddForce(100 * direction.normalized, ForceMode.Impulse);
             }
         }
     }
@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(PowerUpCountdown());
         }
     }
+    private Coroutine countdownRoutine;
+
     IEnumerator PowerUpCountdown()
     {
         yield return new WaitForSeconds(10);
