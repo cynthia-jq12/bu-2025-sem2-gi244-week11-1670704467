@@ -1,17 +1,25 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpawnManager : MonoBehaviour
 {
     public Transform[] spawnPoints;
     public GameObject enemyPrefab;
 
+    public Rigidbody box;
+
+    private Coroutine goodByeRoutine;
+
     void Start()
     {
         InvokeRepeating(nameof(RandomSpawn), 0, 5);
 
-        StartCoroutine(Hello());
-        StartCoroutine(Goodbye());
+        //StartCoroutine(Hello());
+        //StartCoroutine(Goodbye());
+        //StartCoroutine(MoveBox());
+
+        goodByeRoutine = StartCoroutine(Goodbye());
     }
     void RandomSpawn()
     {
@@ -19,12 +27,39 @@ public class SpawnManager : MonoBehaviour
         var spawnPoint = spawnPoints[index];
         Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
     }
+
+    IEnumerator MoveBox()
+    {
+        box.linearVelocity = 10 * Vector3.up;
+        yield return new WaitForSeconds(3);
+        box.linearVelocity = 10 * Vector3.right;
+        yield return new WaitForSeconds(3);
+        box.linearVelocity = 10 * Vector3.down;
+        yield return new WaitForSeconds(3);
+        box.linearVelocity = 10 * Vector3.left;
+        yield return new WaitForSeconds(3);
+
+    }
+    private void Update()
+    {
+        if (Time.time > 5)
+        {
+            if (goodByeRoutine != null)
+            {
+                StopCoroutine(goodByeRoutine);
+            }
+        }
+    }
     IEnumerator Goodbye()
     {
         while (true)
         {
-            yield return new WaitForSeconds(1);
             Debug.Log("Bye" + " " + Time.frameCount);
+            //yield return new WaitForSeconds(1);
+            yield return null;
+
+            //StartCoroutine(Hello());
+            yield return Hello();
         }
     }
     IEnumerator Hello()
