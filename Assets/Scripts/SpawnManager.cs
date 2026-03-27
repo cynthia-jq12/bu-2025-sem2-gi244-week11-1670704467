@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,7 +20,19 @@ public class SpawnManager : MonoBehaviour
         //StartCoroutine(Goodbye());
         //StartCoroutine(MoveBox());
 
-        goodByeRoutine = StartCoroutine(Goodbye());
+        //goodByeRoutine = StartCoroutine(Goodbye());
+
+        StartCoroutine(SpawnRoutine());
+    }
+
+    IEnumerator SpawnRoutine()
+    {
+        yield return new WaitForSeconds(5);
+        while (true)
+        {
+            RandomSpawn();
+            yield return new WaitForSeconds(3);
+        }
     }
     void RandomSpawn()
     {
