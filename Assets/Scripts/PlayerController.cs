@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private InputAction smashAction;
     private InputAction breakAction;
 
+    public bool hasPowerUp = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -32,5 +34,32 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = Vector3.zero;
         }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (hasPowerUp == true)
+            {
+                var rb = collision.gameObject.GetComponent<Rigidbody>();
+                var direction = collision.transform.position - transform.position;
+                rb.AddForce(100 * direction.normalized , ForceMode.Impulse);
+            }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PowerUp"))
+        {
+            hasPowerUp = true;
+            Destroy(other.gameObject);
+
+            StartCoroutine(PowerUpCountdown());
+        }
+    }
+    IEnumerator PowerUpCountdown()
+    {
+        yield return new WaitForSeconds(10);
+        hasPowerUp = false;
     }
 }
